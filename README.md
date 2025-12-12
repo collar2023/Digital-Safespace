@@ -1,33 +1,32 @@
 # 🔒 DigitalSafe-Crypto-Core (E2EE Transparency Repository)
 
-This repository contains the cryptographic core implementation for the DigitalSafe end-to-end encrypted (E2EE) chat application.
+This repository publishes the cryptographic core used by the DigitalSafe end-to-end encrypted (E2EE) chat client.
 
-**Our Commitment to Trust and Transparency:**
-The primary goal of this repository is to openly share the most security-critical part of our application with the security community for continuous review and audit.
+**Purpose and Scope**
+This project makes the client-side cryptographic primitives available for community review and audit. The goal is to enable independent verification of the cryptographic correctness and to increase transparency of the client-side security functions.
 
-## 📝 CRYPTOGRAPHIC SPECIFICATIONS
+## 📝 Cryptographic Specifications
 
-We rely exclusively on the browser's native **Web Crypto API** (W3C Standard) to ensure maximum reliability and security.
+This project relies on the browser's native Web Crypto API (W3C standard).
 
-| Function | Algorithm | Parameters | Security Strength |
+| Function | Algorithm | Parameters | Notes |
 | :--- | :--- | :--- | :--- |
-| **Key Derivation** | PBKDF2 (Password-Based Key Derivation Function 2) | Hash: SHA-256 | High |
-| **Key Iterations** | 100,000 Iterations | Salt: "SIMPLE_SALT_V2" | High (Meets modern security recommendations) |
-| **Symmetric Encryption** | AES-GCM (Advanced Encryption Standard - Galois/Counter Mode) | Key Length: 256-bit, IV: 12 bytes | Excellent (NIST-recommended Authenticated Encryption) |
+| Key Derivation | PBKDF2 | SHA-256, 100,000 iterations | Derives a 256-bit key from a user secret (see implementation).
+| Symmetric Encryption | AES-GCM | 256-bit key, 12-byte IV | Authenticated encryption (AES-GCM).
 
-**Encryption Flow:**
-1.  **Password** $\xrightarrow{PBKDF2/100k}$ **Derived Key (256-bit)**
-2.  **Plaintext + Derived Key + Random IV** $\xrightarrow{AES-GCM}$ **Ciphertext + IV**
+**Encryption Flow**
+1. Password → (PBKDF2 / 100,000 iterations) → Derived Key (256-bit)
+2. Plaintext + Derived Key + Random IV → (AES-GCM) → Ciphertext + IV
 
-## ⚠️ IMPORTANT NOTE ON SCOPE (IP Protection)
+## ⚠️ Scope & Disclosure (Redacted)
+This repository contains only the client-side cryptographic functions (for example, `deriveKey`, `encrypt`, and `decrypt`) that are intended for public audit.
 
-This repository **only** contains the client-side cryptographic functions (`deriveKey`, `encrypt`, `decrypt`).
+Server-side operational policies and implementations (such as anti-abuse/rate-limiting, session management, and commercial systems) are maintained privately and are not included in this public repository. For security and anti-abuse reasons, specific thresholds, storage key names, and deployment details are not disclosed here. Qualified security auditors or partners may be granted restricted access to additional materials under appropriate agreements.
 
-* **The server-side business logic, including rate limiting, Cloudflare Durable Object session management, and monetization strategies, is proprietary and remains private.**
-* All data storage for rate limiting is handled by a private Cloudflare KV namespace and is not exposed in this code.
+If you are performing a formal security review and require access to server-side documentation or operational details, please contact the project maintainers to request restricted access.
 
-We invite security researchers to review `DigitalSafe-Crypto-Core.js` for any cryptographic vulnerabilities.
+## Reviewing & Reporting
+We welcome security reports and constructive feedback. To report issues or vulnerabilities, please follow the guidelines in the repository's issue tracker or contact the maintainers directly. Do not include sensitive data or production logs in public issues.
 
-## 📄 LICENSE
-
-This project is licensed under the MIT License. Please see the LICENSE file for details.
+## 📄 License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
